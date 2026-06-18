@@ -10,8 +10,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import AuthPage from './pages/AuthPage';
 import ProfilePage from './pages/ProfilePage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage';
@@ -50,8 +49,8 @@ function AppRoutes() {
       <Route path="/products" element={<><Navbar /><ProductsPage /><Footer /></>} />
       <Route path="/product/:id" element={<><Navbar /><ProductDetailPage /><Footer /></>} />
       <Route path="/cart" element={<><Navbar /><CartPage /><Footer /></>} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<AuthPage />} />
+      <Route path="/register" element={<AuthPage />} />
       <Route path="/checkout" element={<ProtectedRoute><Navbar /><CheckoutPage /></ProtectedRoute>} />
       <Route path="/order-success/:id" element={<ProtectedRoute><Navbar /><OrderSuccessPage /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Navbar /><ProfilePage /><Footer /></ProtectedRoute>} />
