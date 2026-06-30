@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createProduct, updateProduct, getProductById } from '../utils/api';
+import { createProduct, updateProduct, getProductById, uploadProductImage } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const CATEGORIES = ['Mobiles', 'Laptops', 'Tablets', 'TVs', 'Audio', 'Cameras', 'Gaming', 'Accessories', 'Smart Home', 'Wearables'];
@@ -17,6 +17,7 @@ const AdminAddProduct = () => {
     specifications: [{ key: '', value: '' }]
   });
   const [loading, setLoading] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState(null);
 
   useEffect(() => {
     if (isEdit) {
@@ -54,11 +55,47 @@ const AdminAddProduct = () => {
     });
   };
 
+  const triggerFileSelect = (i) => {
+    document.getElementById(`file-input-${i}`).click();
+  };
+
+  const handleFileChange = async (e, i) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploadingIndex(i);
+    try {
+      const { data } = await uploadProductImage(formData);
+      handleImageChange(i, 'url', data.url);
+      handleImageChange(i, 'public_id', data.public_id);
+      toast.success('Image uploaded successfully!');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Image upload failed');
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const uploadedImages = form.images.filter(img => img.url);
+    if (uploadedImages.length === 0) {
+      toast.error('Please upload at least one image for the product!');
+      return;
+    }
+
     setLoading(true);
     try {
-      const data = { ...form, specifications: form.specifications.filter(s => s.key && s.value), images: form.images.filter(img => img.url) };
+      const data = { ...form, specifications: form.specifications.filter(s => s.key && s.value), images: uploadedImages };
       if (isEdit) await updateProduct(id, data);
       else await createProduct(data);
       toast.success(`Product ${isEdit ? 'updated' : 'created'}!`);
@@ -106,11 +143,35 @@ const AdminAddProduct = () => {
 
           {/* Images */}
           <div style={styles.card}>
-            <h3 style={styles.cardTitle}>Product Images (URLs)</h3>
+            <h3 style={styles.cardTitle}>Product Images</h3>
             {form.images.map((img, i) => (
-              <div key={i} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                <input style={{ ...styles.input, flex: 1 }} placeholder="Image URL" value={img.url} onChange={(e) => handleImageChange(i, 'url', e.target.value)} />
-                {i > 0 && <button type="button" onClick={() => setForm(p => ({ ...p, images: p.images.filter((_, j) => j !== i) }))} style={styles.removeBtn}>✕</button>}
+              <div key={i} style={{ marginBottom: '16px' }}>
+                {img.url ? (
+                  <div style={styles.previewContainer}>
+                    <img src={img.url} alt="Preview" style={styles.previewImg} />
+                    <div style={styles.previewActions}>
+                      <button type="button" onClick={() => triggerFileSelect(i)} style={styles.changeBtn}>
+                        {uploadingIndex === i ? 'Uploading...' : 'Change Image'}
+                      </button>
+                      {i > 0 && (
+                        <button type="button" onClick={() => setForm(p => ({ ...p, images: p.images.filter((_, j) => j !== i) }))} style={styles.removeBtn}>
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={styles.uploadBox} onClick={() => triggerFileSelect(i)}>
+                    <span>{uploadingIndex === i ? 'Uploading...' : '📁 Click to upload image'}</span>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  id={`file-input-${i}`}
+                  style={{ display: 'none' }}
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, i)}
+                />
               </div>
             ))}
             <button type="button" onClick={() => setForm(p => ({ ...p, images: [...p.images, { url: '', public_id: '' }] }))} style={styles.addMoreBtn}>+ Add Image</button>
@@ -143,16 +204,66 @@ const AdminAddProduct = () => {
 const styles = {
   title: { fontSize: '28px', fontWeight: '700', color: '#1e293b', margin: '0 0 24px' },
   grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' },
-  card: { background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
+  card: { background: '#fff', borderRadius: '12px', padding: '24px', border: '1px solid #e2e8f0' },
   cardTitle: { fontSize: '16px', fontWeight: '700', color: '#1e293b', margin: '0 0 16px' },
   field: { marginBottom: '14px' },
   label: { display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '6px' },
   input: { width: '100%', padding: '9px 12px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '14px', color: '#1e293b', outline: 'none', boxSizing: 'border-box' },
   row: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px' },
-  removeBtn: { background: '#fee2e2', color: '#dc2626', border: 'none', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
+  removeBtn: { background: '#f1f5f9', color: '#b91c1c', border: 'none', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
   addMoreBtn: { background: '#f1f5f9', color: '#475569', border: '1px dashed #cbd5e1', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', marginTop: '4px' },
-  submitBtn: { background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 28px', borderRadius: '8px', cursor: 'pointer', fontSize: '15px', fontWeight: '600' },
-  cancelBtn: { background: '#f1f5f9', color: '#475569', border: 'none', padding: '12px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '15px' }
+  submitBtn: { background: '#1e293b', color: '#fff', border: 'none', padding: '12px 28px', borderRadius: '8px', cursor: 'pointer', fontSize: '15px', fontWeight: '600', transition: 'background-color 0.2s' },
+  cancelBtn: { background: '#f1f5f9', color: '#475569', border: 'none', padding: '12px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '15px' },
+  uploadBox: {
+    border: '2px dashed #cbd5e1',
+    borderRadius: '8px',
+    padding: '24px',
+    textAlign: 'center',
+    cursor: 'pointer',
+    background: '#f8fafc',
+    color: '#64748b',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'all 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100px'
+  },
+  previewContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    padding: '12px',
+    border: '1px solid #e2e8f0',
+    borderRadius: '8px',
+    background: '#fff'
+  },
+  previewImg: {
+    width: '80px',
+    height: '80px',
+    objectFit: 'contain',
+    borderRadius: '6px',
+    border: '1px solid #e2e8f0',
+    background: '#f8fafc'
+  },
+  previewActions: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    flex: 1
+  },
+  changeBtn: {
+    background: '#f1f5f9',
+    color: '#334155',
+    border: '1px solid #cbd5e1',
+    padding: '6px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '12px',
+    fontWeight: '600',
+    textAlign: 'center'
+  }
 };
 
 export default AdminAddProduct;

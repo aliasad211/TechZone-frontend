@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({ 
-  baseURL: process.env.REACT_APP_API_URL || 'https://techzone-backend-wk81.onrender.com/api' 
+  baseURL: process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000/api' : 'https://techzone-backend-wk81.onrender.com/api')
 });
 
 // Attach token to every request automatically
@@ -61,3 +61,6 @@ export const getDashboardStats = () => API.get('/admin/stats');
 export const getAdminUsers = () => API.get('/admin/users');
 export const toggleBlockUser = (id) => API.put(`/admin/users/${id}/block`);
 export const getLowStock = () => API.get('/admin/low-stock');
+export const uploadProductImage = (formData) => API.post('/admin/upload', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});

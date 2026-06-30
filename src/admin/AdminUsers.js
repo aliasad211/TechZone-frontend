@@ -15,6 +15,7 @@ const AdminUsers = () => {
 
   const handleToggleBlock = async (id, name, isBlocked) => {
     const action = isBlocked ? 'unblock' : 'block';
+    // TODO(security): Use framework-native modal instead of window.confirm
     if (!window.confirm(`Are you sure you want to ${action} "${name}"?`)) return;
     try {
       await toggleBlockUser(id);
@@ -39,8 +40,8 @@ const AdminUsers = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, i) => (
-                <tr key={user._id} style={{ background: i % 2 === 0 ? '#f8fafc' : '#fff' }}>
+              {users.map((user) => (
+                <tr key={user._id} style={{ background: '#fff' }}>
                   <td style={styles.td}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={styles.avatar}>{user.name.charAt(0).toUpperCase()}</div>
@@ -51,8 +52,8 @@ const AdminUsers = () => {
                   <td style={styles.td}>{user.phone || '—'}</td>
                   <td style={styles.td}>{new Date(user.createdAt).toLocaleDateString('en-PK')}</td>
                   <td style={styles.td}>
-                    <span style={{ ...styles.badge, ...(user.isBlocked ? styles.blocked : styles.active) }}>
-                      {user.isBlocked ? '🚫 Blocked' : '✅ Active'}
+                    <span style={styles.badge}>
+                      {user.isBlocked ? 'Blocked' : 'Active'}
                     </span>
                   </td>
                   <td style={styles.td}>
@@ -72,17 +73,15 @@ const AdminUsers = () => {
 
 const styles = {
   title: { fontSize: '28px', fontWeight: '700', color: '#1e293b', margin: '0 0 8px' },
-  tableWrap: { background: '#fff', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
+  tableWrap: { background: '#fff', borderRadius: '12px', overflow: 'hidden', border: '1px solid #e2e8f0' },
   table: { width: '100%', borderCollapse: 'collapse', fontSize: '14px' },
-  th: { background: '#f1f5f9', padding: '12px 16px', textAlign: 'left', fontWeight: '600', color: '#475569' },
+  th: { background: '#f8fafc', padding: '12px 16px', textAlign: 'left', fontWeight: '600', color: '#475569' },
   td: { padding: '12px 16px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' },
-  avatar: { width: '36px', height: '36px', borderRadius: '50%', background: '#dbeafe', color: '#1d4ed8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '16px' },
-  badge: { padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' },
-  active: { background: '#d1fae5', color: '#065f46' },
-  blocked: { background: '#fee2e2', color: '#991b1b' },
-  actionBtn: { border: 'none', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' },
-  blockBtn: { background: '#fee2e2', color: '#dc2626' },
-  unblockBtn: { background: '#d1fae5', color: '#065f46' }
+  avatar: { width: '36px', height: '36px', borderRadius: '50%', background: '#f1f5f9', color: '#334155', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '16px', border: '1px solid #e2e8f0' },
+  badge: { padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600', background: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0' },
+  actionBtn: { border: 'none', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'all 0.2s' },
+  blockBtn: { background: '#f1f5f9', color: '#b91c1c' },
+  unblockBtn: { background: '#f1f5f9', color: '#334155' }
 };
 
 export default AdminUsers;
