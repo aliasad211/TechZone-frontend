@@ -21,8 +21,8 @@ const CartPage = () => {
 
   if (cartItems.length === 0) return (
     <div style={s.empty}>
-      <div style={s.emptyIcon}><FiShoppingCart size={48} /></div>
-      <h2 style={s.emptyTitle}>Your cart is empty!</h2>
+      <div style={s.emptyIcon}><FiShoppingCart size={40} /></div>
+      <h2 style={s.emptyTitle}>Your cart is empty</h2>
       <p style={s.emptySub}>Looks like you haven&apos;t added anything to your cart yet.</p>
       <Link to="/products" style={s.shopBtn}>Start Shopping <FiArrowRight size={16} /></Link>
     </div>
@@ -30,13 +30,13 @@ const CartPage = () => {
 
   return (
     <div style={s.container}>
-      <h1 style={s.title}>
-        <FiShoppingCart size={22} /> Shopping Cart
+      <div style={s.header}>
+        <h1 style={s.title}>Shopping Cart</h1>
         <span style={s.titleCount}>{cartItems.length} item{cartItems.length > 1 ? 's' : ''}</span>
-      </h1>
-      <div style={s.layout}>
+      </div>
+      <div style={s.layout} className="tz-cart-layout">
         {/* Items */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           {cartItems.map(item => (
             <div key={item._id} style={s.item}>
               <div style={s.imgWrap}>
@@ -74,9 +74,9 @@ const CartPage = () => {
           {cartTotal < 5000 && (
             <div style={s.shipProgress}>
               <div style={s.shipProgressHeader}>
-                <FiTruck size={14} style={{ color: '#00a3ff' }} />
+                <FiTruck size={14} style={{ color: 'var(--tz-ink)' }} />
                 <span style={s.shipProgressText}>
-                  Add Rs. {(5000 - cartTotal).toLocaleString()} more for free shipping!
+                  Add Rs. {(5000 - cartTotal).toLocaleString()} more for free shipping
                 </span>
               </div>
               <div style={s.progressTrack}>
@@ -85,17 +85,17 @@ const CartPage = () => {
             </div>
           )}
 
-          <div style={s.row}><span>Items Total:</span><span>Rs. {cartTotal.toLocaleString()}</span></div>
+          <div style={s.row}><span>Items Total</span><span>Rs. {cartTotal.toLocaleString()}</span></div>
           <div style={s.row}>
-            <span>Shipping:</span>
-            <span>{shipping === 0 ? <span style={{ color: '#10b981', fontWeight: '600' }}>FREE</span> : `Rs. ${shipping}`}</span>
+            <span>Shipping</span>
+            <span>{shipping === 0 ? <span style={{ color: 'var(--tz-success)', fontWeight: '600' }}>FREE</span> : `Rs. ${shipping}`}</span>
           </div>
-          <div style={s.row}><span>Tax (5%):</span><span>Rs. {tax}</span></div>
+          <div style={s.row}><span>Tax (5%)</span><span>Rs. {tax}</span></div>
           <div style={s.totalRow}>
-            <span>Total:</span>
-            <span style={{ color: '#0D2B5E' }}>Rs. {total.toLocaleString()}</span>
+            <span>Total</span>
+            <span>Rs. {total.toLocaleString()}</span>
           </div>
-          {shipping === 0 && <p style={s.freeShipMsg}>🎉 You qualify for free delivery!</p>}
+          {shipping === 0 && <p style={s.freeShipMsg}>You qualify for free delivery.</p>}
           <button onClick={handleCheckout} style={s.checkoutBtn}>
             Checkout <FiArrowRight size={16} />
           </button>
@@ -106,126 +106,119 @@ const CartPage = () => {
 };
 
 const s = {
-  container: { maxWidth: '1100px', margin: '0 auto', padding: '30px 20px' },
+  container: { maxWidth: '1140px', margin: '0 auto', padding: '40px 24px' },
+  header: { display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '28px' },
   title: {
-    fontSize: '26px', fontWeight: '800', color: '#0D2B5E', margin: '0 0 24px',
-    fontFamily: "'Outfit', 'Inter', sans-serif",
-    display: 'flex', alignItems: 'center', gap: '10px',
+    fontSize: '28px', fontWeight: '700', color: 'var(--tz-ink)', margin: 0,
+    fontFamily: "'Outfit', 'Inter', sans-serif", letterSpacing: '-0.02em',
   },
-  titleCount: {
-    fontSize: '14px', fontWeight: '500', color: '#64748b', marginLeft: '4px',
-  },
-  layout: { display: 'flex', gap: '24px', alignItems: 'flex-start' },
+  titleCount: { fontSize: '14px', fontWeight: '500', color: 'var(--tz-text-muted)' },
+  layout: { display: 'flex', gap: '28px', alignItems: 'flex-start' },
   item: {
-    background: '#ffffff', borderRadius: '14px', padding: '18px',
+    background: 'var(--tz-paper)', borderRadius: '14px', padding: '18px',
     display: 'flex', gap: '16px', marginBottom: '12px',
-    boxShadow: '0 2px 10px rgba(13,43,94,0.04)',
-    border: '1px solid rgba(13,43,94,0.06)', alignItems: 'center',
+    border: '1px solid var(--tz-border)', alignItems: 'center',
     transition: 'all 0.2s ease',
   },
   imgWrap: {
-    width: '85px', height: '85px', borderRadius: '12px',
-    background: '#f8fafc', display: 'flex', alignItems: 'center',
+    width: '88px', height: '88px', borderRadius: '12px',
+    background: 'var(--tz-canvas)', display: 'flex', alignItems: 'center',
     justifyContent: 'center', overflow: 'hidden', flexShrink: 0,
   },
-  img: { width: '100%', height: '100%', objectFit: 'contain', padding: '6px' },
+  img: { width: '100%', height: '100%', objectFit: 'contain', padding: '8px' },
   itemName: {
-    color: '#0D2B5E', textDecoration: 'none', fontWeight: '600', fontSize: '15px',
-    display: 'block', lineHeight: '1.3',
+    color: 'var(--tz-ink)', textDecoration: 'none', fontWeight: '600', fontSize: '15px',
+    display: 'block', lineHeight: '1.35',
   },
-  brand: { color: '#94a3b8', fontSize: '12px', margin: '3px 0' },
-  price: { color: '#00a3ff', fontWeight: '700', margin: '4px 0', fontSize: '15px' },
+  brand: { color: 'var(--tz-text-muted)', fontSize: '12px', margin: '4px 0' },
+  price: { color: 'var(--tz-text-body)', fontWeight: '600', margin: '4px 0', fontSize: '14px' },
   qtyControls: { display: 'flex', alignItems: 'center', gap: '6px' },
   qtyBtn: {
-    width: '34px', height: '34px', border: '1.5px solid rgba(13,43,94,0.1)',
-    borderRadius: '8px', background: '#f8fafc', cursor: 'pointer',
+    width: '34px', height: '34px', border: '1px solid var(--tz-border)',
+    borderRadius: '8px', background: 'var(--tz-canvas)', cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    color: '#0D2B5E', transition: 'all 0.2s ease',
+    color: 'var(--tz-ink)', transition: 'all 0.2s ease',
   },
-  qty: { minWidth: '32px', textAlign: 'center', fontWeight: '700', fontSize: '15px', color: '#0D2B5E' },
-  subTotal: { fontWeight: '700', color: '#0D2B5E', margin: '0 0 6px', fontSize: '15px' },
+  qty: { minWidth: '32px', textAlign: 'center', fontWeight: '700', fontSize: '15px', color: 'var(--tz-ink)' },
+  subTotal: { fontWeight: '700', color: 'var(--tz-ink)', margin: '0 0 6px', fontSize: '15px' },
   removeBtn: {
-    background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer',
+    background: 'none', border: 'none', color: 'var(--tz-text-muted)', cursor: 'pointer',
     fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px',
-    marginLeft: 'auto',
+    marginLeft: 'auto', transition: 'color 0.2s ease',
   },
   actionsRow: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px',
   },
   continueLink: {
-    color: '#00a3ff', textDecoration: 'none', fontSize: '14px', fontWeight: '600',
+    color: 'var(--tz-ink)', textDecoration: 'none', fontSize: '14px', fontWeight: '600',
     display: 'flex', alignItems: 'center', gap: '6px',
   },
   clearBtn: {
-    background: 'none', border: '1.5px solid rgba(13,43,94,0.1)',
-    color: '#94a3b8', padding: '8px 18px', borderRadius: '8px',
-    cursor: 'pointer', fontSize: '13px', transition: 'all 0.2s ease',
+    background: 'none', border: '1px solid var(--tz-border)',
+    color: 'var(--tz-text-secondary)', padding: '9px 18px', borderRadius: '9px',
+    cursor: 'pointer', fontSize: '13px', fontWeight: 500, transition: 'all 0.2s ease',
   },
   summary: {
-    width: '320px', background: '#ffffff', borderRadius: '16px',
-    padding: '28px', boxShadow: '0 2px 12px rgba(13,43,94,0.05)',
-    border: '1px solid rgba(13,43,94,0.06)', flexShrink: 0,
-    position: 'sticky', top: '84px',
+    width: '340px', background: 'var(--tz-paper)', borderRadius: '16px',
+    padding: '28px', border: '1px solid var(--tz-border)', flexShrink: 0,
+    position: 'sticky', top: '88px',
   },
   summaryTitle: {
-    fontSize: '18px', fontWeight: '700', color: '#0D2B5E', margin: '0 0 18px',
-    fontFamily: "'Outfit', sans-serif",
+    fontSize: '18px', fontWeight: '700', color: 'var(--tz-ink)', margin: '0 0 20px',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.01em',
   },
   shipProgress: {
-    background: 'rgba(0,163,255,0.04)', borderRadius: '10px',
-    padding: '12px', marginBottom: '18px', border: '1px solid rgba(0,163,255,0.1)',
+    background: 'var(--tz-canvas)', borderRadius: '10px',
+    padding: '14px', marginBottom: '20px', border: '1px solid var(--tz-border)',
   },
   shipProgressHeader: {
-    display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px',
+    display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px',
   },
-  shipProgressText: { color: '#0D2B5E', fontSize: '12px', fontWeight: '600' },
+  shipProgressText: { color: 'var(--tz-text-body)', fontSize: '12px', fontWeight: '600' },
   progressTrack: {
-    height: '6px', borderRadius: '3px', background: 'rgba(13,43,94,0.08)', overflow: 'hidden',
+    height: '6px', borderRadius: '3px', background: 'var(--tz-canvas-2)', overflow: 'hidden',
   },
   progressFill: {
-    height: '100%', borderRadius: '3px',
-    background: 'linear-gradient(90deg, #0D2B5E, #00a3ff)',
+    height: '100%', borderRadius: '3px', background: 'var(--tz-ink)',
     transition: 'width 0.4s ease',
   },
   row: {
-    display: 'flex', justifyContent: 'space-between', marginBottom: '10px',
-    fontSize: '14px', color: '#475569',
+    display: 'flex', justifyContent: 'space-between', marginBottom: '12px',
+    fontSize: '14px', color: 'var(--tz-text-secondary)',
   },
   totalRow: {
     display: 'flex', justifyContent: 'space-between',
-    fontWeight: '800', fontSize: '18px', borderTop: '2px solid rgba(13,43,94,0.06)',
-    paddingTop: '14px', marginTop: '14px', color: '#0D2B5E',
+    fontWeight: '700', fontSize: '18px', borderTop: '1px solid var(--tz-border)',
+    paddingTop: '16px', marginTop: '4px', color: 'var(--tz-ink)',
     fontFamily: "'Outfit', sans-serif",
   },
   freeShipMsg: {
-    color: '#10b981', fontSize: '12px', textAlign: 'center', marginTop: '8px',
+    color: 'var(--tz-success)', fontSize: '12px', textAlign: 'center', marginTop: '10px', fontWeight: 500,
   },
   checkoutBtn: {
-    width: '100%', background: '#0D2B5E', color: '#fff', border: 'none',
-    padding: '15px', borderRadius: '12px', fontSize: '16px', fontWeight: '700',
-    cursor: 'pointer', marginTop: '14px', display: 'flex', alignItems: 'center',
+    width: '100%', background: 'var(--tz-ink)', color: '#fff', border: 'none',
+    padding: '15px', borderRadius: '12px', fontSize: '15px', fontWeight: '600',
+    cursor: 'pointer', marginTop: '16px', display: 'flex', alignItems: 'center',
     justifyContent: 'center', gap: '8px', transition: 'all 0.2s ease',
-    boxShadow: '0 4px 16px rgba(13,43,94,0.15)',
   },
   empty: {
-    textAlign: 'center', padding: '100px 20px', maxWidth: '420px', margin: '0 auto',
+    textAlign: 'center', padding: '110px 20px', maxWidth: '420px', margin: '0 auto',
   },
   emptyIcon: {
-    width: '90px', height: '90px', borderRadius: '50%',
-    background: 'rgba(0,163,255,0.06)', display: 'flex',
-    alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
-    color: '#00a3ff',
+    width: '88px', height: '88px', borderRadius: '20px',
+    background: 'var(--tz-canvas)', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', margin: '0 auto 22px',
+    color: 'var(--tz-text-muted)',
   },
   emptyTitle: {
-    fontSize: '22px', fontWeight: '700', color: '#0D2B5E', margin: '0 0 8px',
-    fontFamily: "'Outfit', sans-serif",
+    fontSize: '22px', fontWeight: '700', color: 'var(--tz-ink)', margin: '0 0 8px',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.01em',
   },
-  emptySub: { color: '#64748b', fontSize: '14px', margin: '0 0 24px' },
+  emptySub: { color: 'var(--tz-text-secondary)', fontSize: '14px', margin: '0 0 26px' },
   shopBtn: {
-    background: '#0D2B5E', color: '#fff', textDecoration: 'none',
-    padding: '14px 32px', borderRadius: '12px', fontSize: '15px',
-    fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '8px',
-    boxShadow: '0 4px 16px rgba(13,43,94,0.15)',
+    background: 'var(--tz-ink)', color: '#fff', textDecoration: 'none',
+    padding: '14px 30px', borderRadius: '12px', fontSize: '15px',
+    fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '8px',
   },
 };
 
