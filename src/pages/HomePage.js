@@ -3,24 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getFeaturedProducts } from '../utils/api';
 import { useCart } from '../context/AppContext';
 import toast from 'react-hot-toast';
-import { FiShoppingCart, FiTruck, FiShield, FiHeadphones, FiLock, FiArrowRight, FiStar, FiChevronRight } from 'react-icons/fi';
+import {
+  FiShoppingCart, FiTruck, FiShield, FiHeadphones, FiLock, FiArrowRight, FiStar,
+  FiSmartphone, FiMonitor, FiTv, FiCamera, FiTablet, FiWatch, FiZap,
+} from 'react-icons/fi';
 
 const CATEGORIES = [
-  { name: 'Mobiles', icon: '📱', gradient: 'linear-gradient(135deg, #0D2B5E, #1a4a8a)' },
-  { name: 'Laptops', icon: '💻', gradient: 'linear-gradient(135deg, #15253F, #0D2B5E)' },
-  { name: 'TVs', icon: '📺', gradient: 'linear-gradient(135deg, #0D2B5E, #00a3ff)' },
-  { name: 'Audio', icon: '🎧', gradient: 'linear-gradient(135deg, #15253F, #1a4a8a)' },
-  { name: 'Gaming', icon: '🎮', gradient: 'linear-gradient(135deg, #1a4a8a, #00a3ff)' },
-  { name: 'Cameras', icon: '📷', gradient: 'linear-gradient(135deg, #0D2B5E, #15253F)' },
-  { name: 'Tablets', icon: '📟', gradient: 'linear-gradient(135deg, #15253F, #0D2B5E)' },
-  { name: 'Wearables', icon: '⌚', gradient: 'linear-gradient(135deg, #0D2B5E, #00a3ff)' },
+  { name: 'Mobiles', icon: <FiSmartphone size={22} /> },
+  { name: 'Laptops', icon: <FiMonitor size={22} /> },
+  { name: 'TVs', icon: <FiTv size={22} /> },
+  { name: 'Audio', icon: <FiHeadphones size={22} /> },
+  { name: 'Gaming', icon: <FiZap size={22} /> },
+  { name: 'Cameras', icon: <FiCamera size={22} /> },
+  { name: 'Tablets', icon: <FiTablet size={22} /> },
+  { name: 'Wearables', icon: <FiWatch size={22} /> },
 ];
 
 const WHY_CHOOSE = [
-  { icon: <FiTruck size={28} />, title: 'Free Shipping', desc: 'On orders above Rs. 5,000' },
-  { icon: <FiShield size={28} />, title: 'Official Warranty', desc: 'Genuine products guaranteed' },
-  { icon: <FiHeadphones size={28} />, title: '24/7 Support', desc: 'Always here to help you' },
-  { icon: <FiLock size={28} />, title: 'Secure Payment', desc: 'Your data is protected' },
+  { icon: <FiTruck size={22} />, title: 'Free Shipping', desc: 'On orders above Rs. 5,000' },
+  { icon: <FiShield size={22} />, title: 'Official Warranty', desc: 'Genuine products guaranteed' },
+  { icon: <FiHeadphones size={22} />, title: '24/7 Support', desc: 'Always here to help you' },
+  { icon: <FiLock size={22} />, title: 'Secure Payment', desc: 'Your data is protected' },
 ];
 
 const TESTIMONIALS = [
@@ -37,7 +40,6 @@ const HomePage = () => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  // Countdown timer state (flash deals)
   const [timeLeft, setTimeLeft] = useState({ hours: 8, minutes: 45, seconds: 30 });
 
   useEffect(() => {
@@ -48,7 +50,6 @@ const HomePage = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -56,7 +57,7 @@ const HomePage = () => {
         if (seconds > 0) { seconds--; }
         else if (minutes > 0) { minutes--; seconds = 59; }
         else if (hours > 0) { hours--; minutes = 59; seconds = 59; }
-        else { hours = 8; minutes = 45; seconds = 30; } // Reset
+        else { hours = 8; minutes = 45; seconds = 30; }
         return { hours, minutes, seconds };
       });
     }, 1000);
@@ -72,29 +73,25 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* ===== HERO SECTION ===== */}
+      {/* ===== HERO ===== */}
       <section style={st.hero}>
-        {/* Floating shapes */}
-        <div style={st.heroShape1} />
-        <div style={st.heroShape2} />
-        <div style={st.heroShape3} />
-        <div style={st.heroContent}>
+        <div style={st.heroInner}>
           <div style={st.heroBadge}>
             <FiStar size={12} /> Pakistan&apos;s #1 Tech Store
           </div>
-          <h1 style={st.heroTitle}>
-            Discover the Latest <span style={{ color: '#00a3ff' }}>Technology</span>
+          <h1 style={st.heroTitle} className="tz-hero-title">
+            Discover the latest<br />in <span style={st.heroAccent}>technology</span>.
           </h1>
           <p style={st.heroSub}>
-            Premium gadgets at unbeatable prices with fast delivery across Pakistan.
-            Shop smartphones, laptops, gaming gear and more.
+            Premium gadgets at unbeatable prices with fast delivery across Pakistan —
+            smartphones, laptops, gaming gear and more.
           </p>
           <div style={st.heroBtns}>
-            <button onClick={() => navigate('/products')} style={st.heroBtn}>
+            <button onClick={() => navigate('/products')} style={st.heroBtn} className="tz-btn-ink">
               Shop Now <FiArrowRight size={16} />
             </button>
-            <button onClick={() => navigate('/products?category=Mobiles')} style={st.heroBtn2}>
-              View Mobiles <FiChevronRight size={16} />
+            <button onClick={() => navigate('/products?category=Mobiles')} style={st.heroBtn2} className="tz-btn-outline">
+              Browse Mobiles
             </button>
           </div>
           <div style={st.heroStats}>
@@ -102,20 +99,22 @@ const HomePage = () => {
             <div style={st.heroStatDivider} />
             <div style={st.heroStat}><span style={st.heroStatNum}>50K+</span><span style={st.heroStatLabel}>Customers</span></div>
             <div style={st.heroStatDivider} />
-            <div style={st.heroStat}><span style={st.heroStatNum}>4.9★</span><span style={st.heroStatLabel}>Rating</span></div>
+            <div style={st.heroStat}><span style={st.heroStatNum}>4.9</span><span style={st.heroStatLabel}>Avg. Rating</span></div>
           </div>
         </div>
       </section>
 
       <div style={st.container}>
-        {/* ===== WHY CHOOSE US ===== */}
+        {/* ===== WHY CHOOSE ===== */}
         <section style={st.whySection}>
-          <div style={st.whyGrid}>
+          <div style={st.whyGrid} className="tz-why-grid">
             {WHY_CHOOSE.map((item, i) => (
               <div key={i} style={st.whyCard}>
                 <div style={st.whyIcon}>{item.icon}</div>
-                <h4 style={st.whyTitle}>{item.title}</h4>
-                <p style={st.whyDesc}>{item.desc}</p>
+                <div>
+                  <h4 style={st.whyTitle}>{item.title}</h4>
+                  <p style={st.whyDesc}>{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -125,16 +124,14 @@ const HomePage = () => {
         <section style={st.section}>
           <div style={st.sectionHeader}>
             <div>
-              <h2 style={st.sectionTitle}>Shop by Category</h2>
-              <p style={st.sectionSub}>Browse our wide range of products</p>
+              <h2 style={st.sectionTitle}>Shop by category</h2>
+              <p style={st.sectionSub}>Browse our full range of products</p>
             </div>
           </div>
-          <div style={st.catGrid}>
+          <div style={st.catGrid} className="tz-cat-grid">
             {CATEGORIES.map(cat => (
-              <Link key={cat.name} to={`/products?category=${cat.name}`} style={st.catCard}>
-                <div style={{ ...st.catIconBg, background: cat.gradient }}>
-                  <span style={st.catEmoji}>{cat.icon}</span>
-                </div>
+              <Link key={cat.name} to={`/products?category=${cat.name}`} style={st.catCard} className="tz-cat-card">
+                <div style={st.catIconBg}>{cat.icon}</div>
                 <span style={st.catName}>{cat.name}</span>
               </Link>
             ))}
@@ -142,20 +139,20 @@ const HomePage = () => {
         </section>
 
         {/* ===== FLASH DEALS ===== */}
-        <section style={st.flashBanner}>
-          <div style={st.flashLeft}>
-            <div style={st.flashBadge}>⚡ Flash Deals</div>
-            <h3 style={st.flashTitle}>Today&apos;s Hot Offers</h3>
-            <p style={st.flashSub}>Limited time deals — grab them before they&apos;re gone!</p>
+        <section style={st.flashBanner} className="tz-flash-banner">
+          <div>
+            <div style={st.flashBadge}><FiZap size={12} /> Flash Deals</div>
+            <h3 style={st.flashTitle}>Today&apos;s hot offers</h3>
+            <p style={st.flashSub}>Limited time deals — grab them before they&apos;re gone.</p>
           </div>
           <div style={st.flashTimer}>
-            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.hours)}</span><span style={st.timerLabel}>Hours</span></div>
+            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.hours)}</span><span style={st.timerLabel}>Hrs</span></div>
             <span style={st.timerSep}>:</span>
-            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.minutes)}</span><span style={st.timerLabel}>Minutes</span></div>
+            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.minutes)}</span><span style={st.timerLabel}>Min</span></div>
             <span style={st.timerSep}>:</span>
-            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.seconds)}</span><span style={st.timerLabel}>Seconds</span></div>
+            <div style={st.timerBox}><span style={st.timerNum}>{pad(timeLeft.seconds)}</span><span style={st.timerLabel}>Sec</span></div>
           </div>
-          <button onClick={() => navigate('/products')} style={st.flashBtn}>
+          <button onClick={() => navigate('/products')} style={st.flashBtn} className="tz-btn-accent">
             View Deals <FiArrowRight size={14} />
           </button>
         </section>
@@ -164,14 +161,14 @@ const HomePage = () => {
         <section style={st.section}>
           <div style={st.sectionHeader}>
             <div>
-              <h2 style={st.sectionTitle}>Featured Products</h2>
+              <h2 style={st.sectionTitle}>Featured products</h2>
               <p style={st.sectionSub}>Handpicked by our team</p>
             </div>
-            <Link to="/products" style={st.viewAllLink}>View All <FiArrowRight size={14} /></Link>
+            <Link to="/products" style={st.viewAllLink} className="tz-view-all">View all <FiArrowRight size={14} /></Link>
           </div>
 
           {loading ? (
-            <div style={st.loadingGrid}>
+            <div style={st.productGrid}>
               {[1,2,3,4].map(i => (
                 <div key={i} style={st.skeleton}>
                   <div style={st.skeletonImg} />
@@ -186,7 +183,7 @@ const HomePage = () => {
           ) : (
             <div style={st.productGrid}>
               {featured.map(product => (
-                <div key={product._id} style={st.productCard}>
+                <div key={product._id} style={st.productCard} className="tz-product-card">
                   {product.originalPrice && (
                     <div style={st.discountTag}>
                       -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
@@ -211,11 +208,12 @@ const HomePage = () => {
                       )}
                     </div>
                     <div style={st.cardFooter}>
-                      <span style={st.ratingBadge}>⭐ {product.ratings || '0'}</span>
+                      <span style={st.ratingBadge}><FiStar size={11} fill="currentColor" /> {product.ratings || '0'}</span>
                       <button
                         onClick={() => handleAddToCart(product)}
                         disabled={product.stock === 0}
                         style={product.stock > 0 ? st.addBtn : st.addBtnDisabled}
+                        className={product.stock > 0 ? 'tz-add-btn' : ''}
                       >
                         {product.stock > 0 ? <><FiShoppingCart size={13} /> Add</> : 'Out of Stock'}
                       </button>
@@ -231,15 +229,15 @@ const HomePage = () => {
         <section style={st.section}>
           <div style={st.sectionHeader}>
             <div>
-              <h2 style={st.sectionTitle}>What Our Customers Say</h2>
+              <h2 style={st.sectionTitle}>What our customers say</h2>
               <p style={st.sectionSub}>Trusted by thousands across Pakistan</p>
             </div>
           </div>
-          <div style={st.testimonialGrid}>
+          <div style={st.testimonialGrid} className="tz-testimonial-grid">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} style={st.testimonialCard}>
                 <div style={st.testimonialStars}>
-                  {'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}
+                  {Array.from({ length: t.rating }).map((_, k) => <FiStar key={k} size={15} fill="currentColor" />)}
                 </div>
                 <p style={st.testimonialText}>&ldquo;{t.text}&rdquo;</p>
                 <div style={st.testimonialAuthor}>
@@ -265,10 +263,10 @@ const HomePage = () => {
         </section>
 
         {/* ===== SHIPPING BANNER ===== */}
-        <section style={st.shippingBanner}>
+        <section style={st.shippingBanner} className="tz-flash-banner">
           <div>
-            <h3 style={st.shipTitle}>🚚 Free Shipping on Orders Above Rs. 5,000</h3>
-            <p style={st.shipSub}>Fast and secure delivery all across Pakistan</p>
+            <h3 style={st.shipTitle}>Free shipping on orders above Rs. 5,000</h3>
+            <p style={st.shipSub}>Fast and secure delivery all across Pakistan.</p>
           </div>
           <button onClick={() => navigate('/products')} style={st.shipBtn}>
             Start Shopping <FiArrowRight size={14} />
@@ -278,11 +276,11 @@ const HomePage = () => {
         {/* ===== NEWSLETTER ===== */}
         <section style={st.newsletter}>
           <div style={st.nlContent}>
-            <h3 style={st.nlTitle}>Stay Updated with TechZone</h3>
+            <h3 style={st.nlTitle}>Stay updated with TechZone</h3>
             <p style={st.nlSub}>Get notified about new arrivals, exclusive deals, and tech news.</p>
-            <div style={st.nlForm}>
-              <input type="email" placeholder="Enter your email address" style={st.nlInput} />
-              <button style={st.nlBtn} onClick={() => toast.success('Subscribed successfully!')}>Subscribe</button>
+            <div style={st.nlForm} className="tz-nl-form">
+              <input type="email" placeholder="Enter your email address" style={st.nlInput} className="tz-nl-input" />
+              <button style={st.nlBtn} className="tz-btn-ink" onClick={() => toast.success('Subscribed successfully!')}>Subscribe</button>
             </div>
           </div>
         </section>
@@ -295,196 +293,155 @@ const HomePage = () => {
 const st = {
   /* Hero */
   hero: {
-    background: 'linear-gradient(135deg, #0D2B5E 0%, #15253F 50%, #0a1e3f 100%)',
-    padding: '90px 20px 70px',
+    background: 'var(--tz-canvas)',
+    borderBottom: '1px solid var(--tz-border)',
+    padding: '96px 24px 88px',
     textAlign: 'center',
-    position: 'relative',
-    overflow: 'hidden',
   },
-  heroShape1: {
-    position: 'absolute', top: '10%', left: '8%', width: '120px', height: '120px',
-    border: '2px solid rgba(0,163,255,0.12)', borderRadius: '24px',
-    transform: 'rotate(45deg)', animation: 'tz-float 6s ease-in-out infinite',
-  },
-  heroShape2: {
-    position: 'absolute', bottom: '15%', right: '10%', width: '80px', height: '80px',
-    background: 'rgba(0,163,255,0.06)', borderRadius: '50%',
-    animation: 'tz-float 8s ease-in-out infinite 1s',
-  },
-  heroShape3: {
-    position: 'absolute', top: '30%', right: '20%', width: '50px', height: '50px',
-    border: '2px solid rgba(0,163,255,0.08)', borderRadius: '12px',
-    transform: 'rotate(20deg)', animation: 'tz-float 5s ease-in-out infinite 2s',
-  },
-  heroContent: {
-    maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 1,
-    animation: 'tz-slideUp 0.8s ease',
+  heroInner: {
+    maxWidth: '780px', margin: '0 auto',
+    animation: 'tz-slideUp 0.7s ease',
   },
   heroBadge: {
     display: 'inline-flex', alignItems: 'center', gap: '6px',
-    background: 'rgba(0,163,255,0.12)', border: '1px solid rgba(0,163,255,0.2)',
-    color: '#00a3ff', padding: '6px 16px', borderRadius: '30px',
-    fontSize: '12px', fontWeight: '600', marginBottom: '20px', letterSpacing: '0.5px',
+    background: 'var(--tz-paper)', border: '1px solid var(--tz-border)',
+    color: 'var(--tz-text-body)', padding: '7px 16px', borderRadius: '30px',
+    fontSize: '12px', fontWeight: '600', marginBottom: '28px', letterSpacing: '0.3px',
   },
   heroTitle: {
-    color: '#ffffff', fontSize: '48px', fontWeight: '800',
-    margin: '0 0 18px', lineHeight: '1.15',
+    color: 'var(--tz-ink)', fontSize: '60px', fontWeight: '700',
+    margin: '0 0 22px', lineHeight: '1.05',
     fontFamily: "'Outfit', 'Inter', sans-serif",
-    letterSpacing: '-0.02em',
+    letterSpacing: '-0.04em',
   },
+  heroAccent: { color: 'var(--tz-accent)' },
   heroSub: {
-    color: 'rgba(255,255,255,0.6)', fontSize: '17px',
-    margin: '0 0 32px', lineHeight: '1.6', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto',
+    color: 'var(--tz-text-secondary)', fontSize: '18px',
+    margin: '0 auto 36px', lineHeight: '1.6', maxWidth: '540px',
   },
   heroBtns: {
-    display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '40px',
+    display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '52px',
   },
   heroBtn: {
-    background: '#00a3ff', color: '#fff', border: 'none',
-    padding: '15px 32px', borderRadius: '12px', fontSize: '15px',
-    cursor: 'pointer', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px',
-    transition: 'all 0.3s ease', boxShadow: '0 4px 20px rgba(0,163,255,0.3)',
+    background: 'var(--tz-ink)', color: '#fff', border: '1px solid var(--tz-ink)',
+    padding: '15px 30px', borderRadius: '12px', fontSize: '15px',
+    cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px',
+    transition: 'all 0.25s ease',
   },
   heroBtn2: {
-    background: 'transparent', color: '#00a3ff',
-    border: '2px solid rgba(0,163,255,0.4)',
-    padding: '14px 32px', borderRadius: '12px', fontSize: '15px',
+    background: 'var(--tz-paper)', color: 'var(--tz-ink)',
+    border: '1px solid var(--tz-border)',
+    padding: '15px 30px', borderRadius: '12px', fontSize: '15px',
     cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.25s ease',
   },
   heroStats: {
-    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '28px',
     flexWrap: 'wrap',
   },
-  heroStat: {
-    display: 'flex', flexDirection: 'column', alignItems: 'center',
-  },
+  heroStat: { display: 'flex', flexDirection: 'column', alignItems: 'center' },
   heroStatNum: {
-    color: '#ffffff', fontSize: '22px', fontWeight: '800',
-    fontFamily: "'Outfit', sans-serif",
+    color: 'var(--tz-ink)', fontSize: '24px', fontWeight: '700',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
   heroStatLabel: {
-    color: 'rgba(255,255,255,0.4)', fontSize: '12px', fontWeight: '500', marginTop: '2px',
+    color: 'var(--tz-text-muted)', fontSize: '12px', fontWeight: '500', marginTop: '4px',
   },
-  heroStatDivider: {
-    width: '1px', height: '32px', background: 'rgba(255,255,255,0.12)',
-  },
+  heroStatDivider: { width: '1px', height: '34px', background: 'var(--tz-border)' },
 
   /* Container */
-  container: { maxWidth: '1200px', margin: '0 auto', padding: '0 20px' },
+  container: { maxWidth: '1240px', margin: '0 auto', padding: '0 24px' },
 
   /* Why Choose */
-  whySection: {
-    margin: '-40px 0 0', position: 'relative', zIndex: 2,
-  },
-  whyGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px',
-  },
+  whySection: { margin: '56px 0 0' },
+  whyGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' },
   whyCard: {
-    background: '#ffffff', borderRadius: '16px', padding: '28px 20px',
-    textAlign: 'center', boxShadow: '0 8px 30px rgba(13,43,94,0.08)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    border: '1px solid rgba(13,43,94,0.06)',
+    background: 'var(--tz-paper)', borderRadius: '14px', padding: '22px',
+    display: 'flex', alignItems: 'center', gap: '14px',
+    border: '1px solid var(--tz-border)',
   },
   whyIcon: {
-    width: '56px', height: '56px', borderRadius: '14px',
-    background: 'linear-gradient(135deg, rgba(0,163,255,0.08), rgba(13,43,94,0.06))',
+    width: '46px', height: '46px', borderRadius: '11px',
+    background: 'var(--tz-canvas)', flexShrink: 0,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    margin: '0 auto 14px', color: '#0D2B5E',
+    color: 'var(--tz-ink)',
   },
   whyTitle: {
-    fontSize: '15px', fontWeight: '700', color: '#0D2B5E', margin: '0 0 6px',
+    fontSize: '14.5px', fontWeight: '600', color: 'var(--tz-ink)', margin: '0 0 3px',
     fontFamily: "'Outfit', sans-serif",
   },
-  whyDesc: {
-    fontSize: '12px', color: '#64748b', margin: 0, lineHeight: '1.5',
-  },
+  whyDesc: { fontSize: '12.5px', color: 'var(--tz-text-secondary)', margin: 0, lineHeight: '1.4' },
 
   /* Sections */
-  section: { margin: '50px 0' },
+  section: { margin: '72px 0' },
   sectionHeader: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-    marginBottom: '24px', flexWrap: 'wrap', gap: '12px',
+    marginBottom: '28px', flexWrap: 'wrap', gap: '12px',
   },
   sectionTitle: {
-    fontSize: '26px', fontWeight: '800', color: '#0D2B5E', margin: 0,
-    fontFamily: "'Outfit', 'Inter', sans-serif", letterSpacing: '-0.02em',
+    fontSize: '30px', fontWeight: '700', color: 'var(--tz-ink)', margin: 0,
+    fontFamily: "'Outfit', 'Inter', sans-serif", letterSpacing: '-0.03em',
   },
-  sectionSub: {
-    fontSize: '14px', color: '#64748b', margin: '4px 0 0',
-  },
+  sectionSub: { fontSize: '14.5px', color: 'var(--tz-text-secondary)', margin: '6px 0 0' },
   viewAllLink: {
-    color: '#00a3ff', textDecoration: 'none', fontSize: '14px', fontWeight: '600',
-    display: 'flex', alignItems: 'center', gap: '4px', transition: 'gap 0.2s ease',
+    color: 'var(--tz-ink)', textDecoration: 'none', fontSize: '14px', fontWeight: '600',
+    display: 'flex', alignItems: 'center', gap: '6px', transition: 'gap 0.2s ease',
   },
 
   /* Categories */
-  catGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: '12px',
-  },
+  catGrid: { display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: '12px' },
   catCard: {
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px',
-    padding: '22px 10px 18px', background: '#ffffff', borderRadius: '16px',
-    textDecoration: 'none', boxShadow: '0 2px 12px rgba(13,43,94,0.05)',
-    transition: 'all 0.3s ease', border: '1px solid rgba(13,43,94,0.06)',
-    cursor: 'pointer',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+    padding: '24px 10px', background: 'var(--tz-paper)', borderRadius: '14px',
+    textDecoration: 'none', border: '1px solid var(--tz-border)',
+    transition: 'all 0.25s ease', cursor: 'pointer',
   },
   catIconBg: {
-    width: '52px', height: '52px', borderRadius: '14px',
+    width: '50px', height: '50px', borderRadius: '13px',
+    background: 'var(--tz-canvas)', color: 'var(--tz-ink)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    transition: 'transform 0.3s ease',
+    transition: 'all 0.25s ease',
   },
-  catEmoji: { fontSize: '24px', filter: 'grayscale(0)' },
-  catName: {
-    color: '#0D2B5E', fontSize: '12px', fontWeight: '600', textAlign: 'center',
-  },
+  catName: { color: 'var(--tz-ink)', fontSize: '12.5px', fontWeight: '600', textAlign: 'center' },
 
   /* Flash Deals */
   flashBanner: {
-    background: 'linear-gradient(135deg, #0D2B5E, #15253F)',
-    borderRadius: '20px', padding: '36px 40px',
+    background: 'var(--tz-ink)',
+    borderRadius: '20px', padding: '38px 40px',
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    margin: '50px 0', flexWrap: 'wrap', gap: '20px',
-    border: '1px solid rgba(0,163,255,0.15)',
-    boxShadow: '0 0 40px rgba(0,163,255,0.08)',
+    margin: '72px 0', flexWrap: 'wrap', gap: '22px',
   },
-  flashLeft: {},
   flashBadge: {
-    display: 'inline-block', background: 'rgba(0,163,255,0.15)',
-    color: '#00a3ff', padding: '4px 14px', borderRadius: '20px',
-    fontSize: '12px', fontWeight: '700', marginBottom: '10px',
+    display: 'inline-flex', alignItems: 'center', gap: '5px',
+    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)',
+    color: 'var(--tz-accent-light)', padding: '5px 13px', borderRadius: '20px',
+    fontSize: '12px', fontWeight: '600', marginBottom: '12px',
   },
   flashTitle: {
-    color: '#ffffff', fontSize: '22px', fontWeight: '800', margin: '0 0 6px',
-    fontFamily: "'Outfit', sans-serif",
+    color: '#ffffff', fontSize: '24px', fontWeight: '700', margin: '0 0 6px',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
-  flashSub: {
-    color: 'rgba(255,255,255,0.5)', fontSize: '13px', margin: 0,
-  },
-  flashTimer: {
-    display: 'flex', alignItems: 'center', gap: '8px',
-  },
+  flashSub: { color: 'rgba(255,255,255,0.55)', fontSize: '14px', margin: 0 },
+  flashTimer: { display: 'flex', alignItems: 'center', gap: '8px' },
   timerBox: {
-    background: 'rgba(0,163,255,0.12)', borderRadius: '12px',
-    padding: '12px 16px', textAlign: 'center', minWidth: '70px',
-    border: '1px solid rgba(0,163,255,0.2)',
+    background: 'rgba(255,255,255,0.06)', borderRadius: '12px',
+    padding: '12px 14px', textAlign: 'center', minWidth: '64px',
+    border: '1px solid rgba(255,255,255,0.1)',
   },
   timerNum: {
-    display: 'block', color: '#00a3ff', fontSize: '24px', fontWeight: '800',
-    fontFamily: "'Outfit', monospace", animation: 'tz-countPulse 1s ease infinite',
+    display: 'block', color: '#ffffff', fontSize: '24px', fontWeight: '700',
+    fontFamily: "'Outfit', monospace",
   },
   timerLabel: {
     color: 'rgba(255,255,255,0.4)', fontSize: '10px', fontWeight: '600',
     textTransform: 'uppercase', letterSpacing: '1px',
   },
-  timerSep: {
-    color: '#00a3ff', fontSize: '24px', fontWeight: '800',
-  },
+  timerSep: { color: 'rgba(255,255,255,0.3)', fontSize: '22px', fontWeight: '700' },
   flashBtn: {
-    background: '#00a3ff', color: '#ffffff', border: 'none',
-    padding: '12px 28px', borderRadius: '10px', fontSize: '14px',
-    fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center',
-    gap: '6px', transition: 'all 0.3s ease', boxShadow: '0 4px 16px rgba(0,163,255,0.3)',
+    background: 'var(--tz-accent)', color: '#ffffff', border: 'none',
+    padding: '13px 26px', borderRadius: '11px', fontSize: '14px',
+    fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center',
+    gap: '6px', transition: 'all 0.25s ease',
   },
 
   /* Products */
@@ -492,202 +449,179 @@ const st = {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px',
   },
   productCard: {
-    background: '#ffffff', borderRadius: '16px', overflow: 'hidden',
-    boxShadow: '0 2px 12px rgba(13,43,94,0.05)',
-    border: '1px solid rgba(13,43,94,0.06)',
-    transition: 'all 0.3s ease', position: 'relative',
+    background: 'var(--tz-paper)', borderRadius: '14px', overflow: 'hidden',
+    border: '1px solid var(--tz-border)',
+    transition: 'all 0.25s ease', position: 'relative',
   },
   discountTag: {
     position: 'absolute', top: '12px', left: '12px', zIndex: 2,
-    background: '#ef4444', color: '#fff', padding: '4px 10px',
-    borderRadius: '8px', fontSize: '12px', fontWeight: '700',
+    background: 'var(--tz-ink)', color: '#fff', padding: '4px 10px',
+    borderRadius: '7px', fontSize: '11.5px', fontWeight: '700',
   },
   productImgWrap: {
-    background: '#f8fafc', padding: '12px', display: 'flex',
+    background: 'var(--tz-canvas)', padding: '20px', display: 'flex',
     alignItems: 'center', justifyContent: 'center',
   },
-  productImg: {
-    width: '100%', height: '180px', objectFit: 'contain',
-  },
-  productInfo: { padding: '16px' },
+  productImg: { width: '100%', height: '180px', objectFit: 'contain' },
+  productInfo: { padding: '18px' },
   productBrand: {
-    color: '#64748b', fontSize: '11px', margin: '0 0 4px',
-    textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.5px',
+    color: 'var(--tz-text-muted)', fontSize: '11px', margin: '0 0 5px',
+    textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.6px',
   },
   productName: {
-    color: '#0D2B5E', fontSize: '14px', fontWeight: '600',
-    textDecoration: 'none', display: 'block', marginBottom: '8px',
+    color: 'var(--tz-ink)', fontSize: '14px', fontWeight: '600',
+    textDecoration: 'none', display: 'block', marginBottom: '10px',
     lineHeight: '1.4',
   },
-  priceRow: {
-    display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px',
-  },
+  priceRow: { display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px' },
   productPrice: {
-    color: '#0D2B5E', fontSize: '17px', fontWeight: '800',
-    fontFamily: "'Outfit', sans-serif",
+    color: 'var(--tz-ink)', fontSize: '18px', fontWeight: '700',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
-  originalPrice: {
-    color: '#94a3b8', fontSize: '12px', textDecoration: 'line-through',
-  },
-  cardFooter: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-  },
+  originalPrice: { color: 'var(--tz-text-muted)', fontSize: '12px', textDecoration: 'line-through' },
+  cardFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   ratingBadge: {
-    background: 'rgba(251,191,36,0.1)', color: '#92400e',
-    padding: '3px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: '600',
+    display: 'inline-flex', alignItems: 'center', gap: '4px',
+    background: 'var(--tz-canvas)', color: 'var(--tz-text-body)',
+    padding: '4px 9px', borderRadius: '6px', fontSize: '12px', fontWeight: '600',
   },
   addBtn: {
-    background: '#0D2B5E', color: '#fff', border: 'none',
-    padding: '7px 16px', borderRadius: '8px', cursor: 'pointer',
-    fontSize: '12px', fontWeight: '600', display: 'flex', alignItems: 'center',
+    background: 'var(--tz-ink)', color: '#fff', border: 'none',
+    padding: '8px 16px', borderRadius: '8px', cursor: 'pointer',
+    fontSize: '12.5px', fontWeight: '600', display: 'flex', alignItems: 'center',
     gap: '5px', transition: 'all 0.2s ease',
   },
   addBtnDisabled: {
-    background: '#e2e8f0', color: '#94a3b8', border: 'none',
-    padding: '7px 16px', borderRadius: '8px', cursor: 'not-allowed',
-    fontSize: '12px',
+    background: 'var(--tz-canvas-2)', color: 'var(--tz-text-muted)', border: 'none',
+    padding: '8px 16px', borderRadius: '8px', cursor: 'not-allowed',
+    fontSize: '12.5px', fontWeight: 600,
   },
 
   /* Loading Skeleton */
-  loadingGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px',
-  },
   skeleton: {
-    background: '#ffffff', borderRadius: '16px', overflow: 'hidden',
-    border: '1px solid rgba(13,43,94,0.06)',
+    background: 'var(--tz-paper)', borderRadius: '14px', overflow: 'hidden',
+    border: '1px solid var(--tz-border)',
   },
   skeletonImg: {
-    height: '200px', background: 'linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%)',
+    height: '200px', background: 'linear-gradient(90deg, #f2f2ee 25%, #e7e7e1 50%, #f2f2ee 75%)',
     backgroundSize: '200% 100%', animation: 'tz-shimmer 1.5s infinite',
   },
-  skeletonBody: { padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' },
+  skeletonBody: { padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px' },
   skeletonLine: {
     height: '12px', borderRadius: '6px',
-    background: 'linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%)',
+    background: 'linear-gradient(90deg, #f2f2ee 25%, #e7e7e1 50%, #f2f2ee 75%)',
     backgroundSize: '200% 100%', animation: 'tz-shimmer 1.5s infinite',
   },
 
   /* Testimonials */
-  testimonialGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px',
-  },
+  testimonialGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' },
   testimonialCard: {
-    background: '#ffffff', borderRadius: '16px', padding: '28px',
-    boxShadow: '0 2px 12px rgba(13,43,94,0.05)',
-    border: '1px solid rgba(13,43,94,0.06)', transition: 'all 0.3s ease',
+    background: 'var(--tz-paper)', borderRadius: '16px', padding: '30px',
+    border: '1px solid var(--tz-border)',
   },
   testimonialStars: {
-    color: '#fbbf24', fontSize: '16px', marginBottom: '14px', letterSpacing: '2px',
+    color: 'var(--tz-accent)', display: 'flex', gap: '3px', marginBottom: '16px',
   },
   testimonialText: {
-    color: '#475569', fontSize: '14px', lineHeight: '1.7', margin: '0 0 18px',
-    fontStyle: 'italic',
+    color: 'var(--tz-text-body)', fontSize: '14.5px', lineHeight: '1.7', margin: '0 0 20px',
   },
-  testimonialAuthor: {
-    display: 'flex', alignItems: 'center', gap: '10px',
-  },
+  testimonialAuthor: { display: 'flex', alignItems: 'center', gap: '12px' },
   testimonialAvatar: {
-    width: '40px', height: '40px', borderRadius: '50%',
-    background: 'linear-gradient(135deg, #0D2B5E, #00a3ff)',
-    color: '#fff', fontSize: '16px', fontWeight: '700',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexShrink: 0,
+    width: '42px', height: '42px', borderRadius: '50%',
+    background: 'var(--tz-ink)', color: '#fff', fontSize: '16px', fontWeight: '700',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+    fontFamily: "'Outfit', sans-serif",
   },
-  testimonialName: {
-    fontSize: '14px', fontWeight: '600', color: '#0D2B5E', margin: 0,
-  },
-  testimonialCity: {
-    fontSize: '12px', color: '#64748b', margin: '2px 0 0',
-  },
+  testimonialName: { fontSize: '14px', fontWeight: '600', color: 'var(--tz-ink)', margin: 0 },
+  testimonialCity: { fontSize: '12.5px', color: 'var(--tz-text-secondary)', margin: '2px 0 0' },
 
   /* Brands */
   brandSection: {
-    textAlign: 'center', margin: '50px 0', padding: '30px 0',
-    borderTop: '1px solid rgba(13,43,94,0.06)',
-    borderBottom: '1px solid rgba(13,43,94,0.06)',
+    textAlign: 'center', margin: '72px 0', padding: '36px 0',
+    borderTop: '1px solid var(--tz-border)',
+    borderBottom: '1px solid var(--tz-border)',
   },
   brandLabel: {
-    color: '#94a3b8', fontSize: '12px', fontWeight: '600',
-    textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 18px',
+    color: 'var(--tz-text-muted)', fontSize: '11.5px', fontWeight: '600',
+    textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 22px',
   },
-  brandGrid: {
-    display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap',
-  },
+  brandGrid: { display: 'flex', justifyContent: 'center', gap: '32px', flexWrap: 'wrap' },
   brandItem: {
-    color: '#0D2B5E', fontSize: '16px', fontWeight: '700', opacity: 0.35,
-    fontFamily: "'Outfit', sans-serif", letterSpacing: '1px',
-    transition: 'opacity 0.2s ease', cursor: 'default',
+    color: 'var(--tz-ink)', fontSize: '17px', fontWeight: '700', opacity: 0.4,
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.01em',
   },
 
   /* Shipping Banner */
   shippingBanner: {
-    background: 'linear-gradient(135deg, #0D2B5E, #00a3ff)',
-    borderRadius: '20px', padding: '36px 40px',
+    background: 'var(--tz-accent)',
+    borderRadius: '20px', padding: '38px 40px',
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    margin: '50px 0', flexWrap: 'wrap', gap: '20px',
-    color: '#ffffff',
+    margin: '72px 0', flexWrap: 'wrap', gap: '20px', color: '#ffffff',
   },
   shipTitle: {
-    fontSize: '22px', fontWeight: '800', margin: '0 0 6px',
-    fontFamily: "'Outfit', sans-serif",
+    fontSize: '23px', fontWeight: '700', margin: '0 0 6px',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
-  shipSub: {
-    margin: 0, opacity: 0.7, fontSize: '14px',
-  },
+  shipSub: { margin: 0, opacity: 0.85, fontSize: '14.5px' },
   shipBtn: {
-    background: '#ffffff', color: '#0D2B5E', border: 'none',
-    padding: '12px 28px', borderRadius: '10px', fontSize: '14px',
+    background: '#ffffff', color: 'var(--tz-accent)', border: 'none',
+    padding: '13px 26px', borderRadius: '11px', fontSize: '14px',
     fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center',
-    gap: '6px', transition: 'all 0.3s ease',
+    gap: '6px', transition: 'all 0.25s ease',
   },
 
   /* Newsletter */
   newsletter: {
-    background: '#ffffff', borderRadius: '20px', padding: '50px 40px',
-    textAlign: 'center', margin: '0 0 50px',
-    boxShadow: '0 4px 24px rgba(13,43,94,0.06)',
-    border: '1px solid rgba(13,43,94,0.06)',
+    background: 'var(--tz-paper)', borderRadius: '20px', padding: '56px 40px',
+    textAlign: 'center', margin: '0 0 72px',
+    border: '1px solid var(--tz-border)',
   },
   nlContent: { maxWidth: '480px', margin: '0 auto' },
   nlTitle: {
-    fontSize: '24px', fontWeight: '800', color: '#0D2B5E', margin: '0 0 8px',
-    fontFamily: "'Outfit', sans-serif",
+    fontSize: '26px', fontWeight: '700', color: 'var(--tz-ink)', margin: '0 0 10px',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
-  nlSub: {
-    color: '#64748b', fontSize: '14px', margin: '0 0 24px', lineHeight: '1.6',
-  },
-  nlForm: {
-    display: 'flex', gap: '10px', maxWidth: '420px', margin: '0 auto',
-  },
+  nlSub: { color: 'var(--tz-text-secondary)', fontSize: '14.5px', margin: '0 0 26px', lineHeight: '1.6' },
+  nlForm: { display: 'flex', gap: '10px', maxWidth: '440px', margin: '0 auto' },
   nlInput: {
-    flex: 1, padding: '12px 16px', border: '1.5px solid #e2e8f0',
-    borderRadius: '10px', fontSize: '14px', outline: 'none',
-    transition: 'border-color 0.3s ease',
+    flex: 1, padding: '13px 16px', border: '1px solid var(--tz-border)',
+    borderRadius: '11px', fontSize: '14px', outline: 'none', background: 'var(--tz-canvas)',
+    transition: 'border-color 0.2s ease',
   },
   nlBtn: {
-    background: '#0D2B5E', color: '#fff', border: 'none',
-    padding: '12px 24px', borderRadius: '10px', fontSize: '14px',
-    fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap',
+    background: 'var(--tz-ink)', color: '#fff', border: '1px solid var(--tz-ink)',
+    padding: '13px 26px', borderRadius: '11px', fontSize: '14px',
+    fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap',
     transition: 'all 0.2s ease',
   },
 };
 
-// Responsive overrides
+/* Responsive + hover overrides */
 const homeStyle = document.createElement('style');
 homeStyle.textContent = `
+  .tz-btn-ink:hover { background: var(--tz-ink-soft) !important; }
+  .tz-btn-outline:hover { border-color: var(--tz-ink) !important; }
+  .tz-btn-accent:hover { background: var(--tz-accent-hover) !important; }
+  .tz-cat-card:hover { border-color: var(--tz-ink) !important; transform: translateY(-3px); }
+  .tz-cat-card:hover > div { background: var(--tz-accent) !important; color: #fff !important; }
+  .tz-product-card:hover { border-color: var(--tz-ink) !important; box-shadow: var(--tz-shadow-md) !important; }
+  .tz-add-btn:hover { background: var(--tz-accent) !important; }
+  .tz-view-all:hover { gap: 10px !important; color: var(--tz-accent) !important; }
+  .tz-nl-input:focus { border-color: var(--tz-accent) !important; background: #fff !important; }
   @media (max-width: 900px) {
     .tz-why-grid { grid-template-columns: repeat(2, 1fr) !important; }
   }
   @media (max-width: 768px) {
-    .tz-hero-title { font-size: 32px !important; }
+    .tz-hero-title { font-size: 38px !important; }
     .tz-cat-grid { grid-template-columns: repeat(4, 1fr) !important; }
     .tz-testimonial-grid { grid-template-columns: 1fr !important; }
-    .tz-flash-banner { flex-direction: column; text-align: center; }
+    .tz-flash-banner { flex-direction: column; text-align: center; align-items: flex-start; }
     .tz-nl-form { flex-direction: column !important; }
   }
   @media (max-width: 480px) {
-    .tz-why-grid { grid-template-columns: 1fr 1fr !important; }
+    .tz-why-grid { grid-template-columns: 1fr !important; }
     .tz-cat-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .tz-hero-title { font-size: 32px !important; }
   }
 `;
 if (!document.getElementById('tz-home-responsive')) {

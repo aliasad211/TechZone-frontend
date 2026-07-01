@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { getProducts, getProductMeta } from '../utils/api';
 import { useCart } from '../context/AppContext';
 import toast from 'react-hot-toast';
-import { FiShoppingCart, FiSliders, FiGrid, FiChevronDown } from 'react-icons/fi';
+import { FiShoppingCart, FiSliders, FiChevronDown, FiStar, FiSearch } from 'react-icons/fi';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -82,7 +82,7 @@ const ProductsPage = () => {
         <div style={s.toolbar}>
           <p style={s.resultText}>
             {keyword && <span>Results for &ldquo;{keyword}&rdquo;</span>}
-            {category && <span style={{ color: '#00a3ff', fontWeight: '600' }}> · {category}</span>}
+            {category && <span style={{ color: 'var(--tz-accent)', fontWeight: '600' }}> · {category}</span>}
             {!keyword && !category && <span>All Products</span>}
           </p>
           <div style={s.sortWrap}>
@@ -112,7 +112,7 @@ const ProductsPage = () => {
           </div>
         ) : products.length === 0 ? (
           <div style={s.noResults}>
-            <div style={s.noResultsIcon}>😔</div>
+            <div style={s.noResultsIcon}><FiSearch size={30} /></div>
             <h3 style={s.noResultsTitle}>No products found</h3>
             <p style={s.noResultsSub}>Try adjusting your filters or search terms</p>
             <button onClick={() => { setSearchParams({}); }} style={s.clearBtn}>Clear All Filters</button>
@@ -139,7 +139,7 @@ const ProductsPage = () => {
                     {product.originalPrice && <span style={s.original}>Rs. {product.originalPrice.toLocaleString()}</span>}
                   </div>
                   <div style={s.cardFooter}>
-                    <span style={s.rating}>⭐ {product.ratings || '0'} ({product.numReviews})</span>
+                    <span style={s.rating}><FiStar size={11} fill="currentColor" /> {product.ratings || '0'} ({product.numReviews})</span>
                     <button
                       onClick={() => { addToCart(product); toast.success('Added!'); }}
                       disabled={product.stock === 0}
@@ -178,145 +178,140 @@ const ProductsPage = () => {
 
 const s = {
   page: {
-    maxWidth: '1200px', margin: '0 auto', padding: '30px 20px', display: 'flex', gap: '28px',
+    maxWidth: '1240px', margin: '0 auto', padding: '36px 24px', display: 'flex', gap: '32px',
   },
   sidebar: {
-    width: '230px', flexShrink: 0, background: '#ffffff', borderRadius: '16px',
-    padding: '24px', boxShadow: '0 2px 12px rgba(13,43,94,0.05)',
-    border: '1px solid rgba(13,43,94,0.06)', alignSelf: 'flex-start',
-    position: 'sticky', top: '84px',
+    width: '240px', flexShrink: 0, background: 'var(--tz-paper)', borderRadius: '16px',
+    padding: '26px', border: '1px solid var(--tz-border)', alignSelf: 'flex-start',
+    position: 'sticky', top: '88px',
   },
   filterHeader: {
-    display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', color: '#0D2B5E',
+    display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '22px', color: 'var(--tz-ink)',
   },
   filterTitle: {
-    fontSize: '17px', fontWeight: '700', color: '#0D2B5E', margin: 0,
-    fontFamily: "'Outfit', sans-serif",
+    fontSize: '16px', fontWeight: '700', color: 'var(--tz-ink)', margin: 0,
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.01em',
   },
   filterSection: { marginBottom: '8px' },
-  filterDivider: {
-    height: '1px', background: 'rgba(13,43,94,0.06)', margin: '16px 0',
-  },
+  filterDivider: { height: '1px', background: 'var(--tz-border)', margin: '18px 0' },
   filterLabel: {
-    fontSize: '11px', fontWeight: '700', color: '#64748b', margin: '0 0 8px',
-    textTransform: 'uppercase', letterSpacing: '1px',
+    fontSize: '11px', fontWeight: '600', color: 'var(--tz-text-muted)', margin: '0 0 10px',
+    textTransform: 'uppercase', letterSpacing: '1.2px',
   },
   filterItem: {
-    display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px',
-    border: 'none', background: 'none', cursor: 'pointer', color: '#64748b',
-    fontSize: '13px', borderRadius: '8px', transition: 'all 0.2s ease',
+    display: 'block', width: '100%', textAlign: 'left', padding: '9px 12px',
+    border: 'none', background: 'none', cursor: 'pointer', color: 'var(--tz-text-secondary)',
+    fontSize: '13.5px', borderRadius: '8px', transition: 'all 0.2s ease',
   },
   activeFilter: {
-    display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px',
-    border: 'none', background: 'rgba(0,163,255,0.08)', cursor: 'pointer',
-    color: '#0D2B5E', fontSize: '13px', borderRadius: '8px', fontWeight: '600',
+    display: 'block', width: '100%', textAlign: 'left', padding: '9px 12px',
+    border: 'none', background: 'var(--tz-ink)', cursor: 'pointer',
+    color: '#ffffff', fontSize: '13.5px', borderRadius: '8px', fontWeight: '600',
   },
   toolbar: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    marginBottom: '20px', flexWrap: 'wrap', gap: '10px',
+    marginBottom: '22px', flexWrap: 'wrap', gap: '10px',
   },
-  resultText: { color: '#64748b', margin: 0, fontSize: '14px' },
+  resultText: { color: 'var(--tz-text-secondary)', margin: 0, fontSize: '14px' },
   sortWrap: { position: 'relative' },
   sortIcon: {
-    position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-    color: '#64748b', pointerEvents: 'none', fontSize: '14px',
+    position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+    color: 'var(--tz-text-secondary)', pointerEvents: 'none', fontSize: '14px',
   },
   sortSelect: {
-    padding: '9px 30px 9px 14px', border: '1.5px solid rgba(13,43,94,0.1)',
-    borderRadius: '10px', fontSize: '13px', color: '#475569',
-    background: '#ffffff', appearance: 'none', cursor: 'pointer',
-    outline: 'none', transition: 'border-color 0.3s ease',
+    padding: '10px 34px 10px 14px', border: '1px solid var(--tz-border)',
+    borderRadius: '10px', fontSize: '13px', color: 'var(--tz-ink)',
+    background: 'var(--tz-paper)', appearance: 'none', cursor: 'pointer',
+    outline: 'none', fontWeight: 500, transition: 'border-color 0.2s ease',
   },
   grid: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '16px',
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '18px',
   },
   card: {
-    background: '#ffffff', borderRadius: '14px', overflow: 'hidden',
-    boxShadow: '0 2px 10px rgba(13,43,94,0.04)',
-    border: '1px solid rgba(13,43,94,0.06)', transition: 'all 0.3s ease',
+    background: 'var(--tz-paper)', borderRadius: '14px', overflow: 'hidden',
+    border: '1px solid var(--tz-border)', transition: 'all 0.25s ease',
     position: 'relative',
   },
   discountTag: {
     position: 'absolute', top: '10px', left: '10px', zIndex: 2,
-    background: '#ef4444', color: '#fff', padding: '3px 8px',
+    background: 'var(--tz-ink)', color: '#fff', padding: '4px 9px',
     borderRadius: '6px', fontSize: '11px', fontWeight: '700',
   },
   imgWrap: {
-    background: '#f8fafc', padding: '10px', display: 'flex',
+    background: 'var(--tz-canvas)', padding: '18px', display: 'flex',
     alignItems: 'center', justifyContent: 'center',
   },
-  img: {
-    width: '100%', height: '160px', objectFit: 'contain',
-  },
-  info: { padding: '14px' },
+  img: { width: '100%', height: '160px', objectFit: 'contain' },
+  info: { padding: '16px' },
   brand: {
-    color: '#64748b', fontSize: '10px', margin: '0 0 4px',
-    textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.5px',
+    color: 'var(--tz-text-muted)', fontSize: '10px', margin: '0 0 5px',
+    textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.6px',
   },
   name: {
-    color: '#0D2B5E', fontSize: '13px', fontWeight: '600', textDecoration: 'none',
-    display: 'block', lineHeight: '1.4', marginBottom: '6px',
+    color: 'var(--tz-ink)', fontSize: '13.5px', fontWeight: '600', textDecoration: 'none',
+    display: 'block', lineHeight: '1.4', marginBottom: '8px',
   },
-  priceRow: { display: 'flex', gap: '8px', alignItems: 'center', margin: '6px 0' },
+  priceRow: { display: 'flex', gap: '8px', alignItems: 'baseline', margin: '8px 0' },
   price: {
-    color: '#0D2B5E', fontSize: '16px', fontWeight: '800',
-    fontFamily: "'Outfit', sans-serif",
+    color: 'var(--tz-ink)', fontSize: '17px', fontWeight: '700',
+    fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em',
   },
-  original: { color: '#94a3b8', fontSize: '11px', textDecoration: 'line-through' },
+  original: { color: 'var(--tz-text-muted)', fontSize: '11px', textDecoration: 'line-through' },
   cardFooter: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px',
   },
   rating: {
-    background: 'rgba(251,191,36,0.1)', color: '#92400e',
-    padding: '2px 6px', borderRadius: '5px', fontSize: '11px', fontWeight: '600',
+    display: 'inline-flex', alignItems: 'center', gap: '4px',
+    background: 'var(--tz-canvas)', color: 'var(--tz-text-body)',
+    padding: '3px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: '600',
   },
   addBtn: {
-    background: '#0D2B5E', color: '#fff', border: 'none',
-    padding: '5px 14px', borderRadius: '7px', cursor: 'pointer',
+    background: 'var(--tz-ink)', color: '#fff', border: 'none',
+    padding: '7px 15px', borderRadius: '8px', cursor: 'pointer',
     fontSize: '12px', fontWeight: '600', display: 'flex', alignItems: 'center',
-    gap: '4px', transition: 'all 0.2s ease',
+    gap: '5px', transition: 'all 0.2s ease',
   },
   disabledBtn: {
-    background: '#e2e8f0', color: '#94a3b8', border: 'none',
-    padding: '5px 14px', borderRadius: '7px', cursor: 'not-allowed', fontSize: '12px',
+    background: 'var(--tz-canvas-2)', color: 'var(--tz-text-muted)', border: 'none',
+    padding: '7px 15px', borderRadius: '8px', cursor: 'not-allowed', fontSize: '12px', fontWeight: 600,
   },
-  noResults: {
-    textAlign: 'center', padding: '80px 20px',
+  noResults: { textAlign: 'center', padding: '90px 20px' },
+  noResultsIcon: {
+    width: '64px', height: '64px', borderRadius: '16px', margin: '0 auto 16px',
+    background: 'var(--tz-canvas)', color: 'var(--tz-text-muted)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
-  noResultsIcon: { fontSize: '56px', marginBottom: '12px' },
   noResultsTitle: {
-    fontSize: '20px', fontWeight: '700', color: '#0D2B5E', margin: '0 0 8px',
+    fontSize: '20px', fontWeight: '700', color: 'var(--tz-ink)', margin: '0 0 8px',
+    fontFamily: "'Outfit', sans-serif",
   },
-  noResultsSub: { color: '#64748b', fontSize: '14px', margin: '0 0 20px' },
+  noResultsSub: { color: 'var(--tz-text-secondary)', fontSize: '14px', margin: '0 0 22px' },
   clearBtn: {
-    background: '#0D2B5E', color: '#fff', border: 'none',
-    padding: '10px 24px', borderRadius: '10px', fontSize: '14px',
+    background: 'var(--tz-ink)', color: '#fff', border: 'none',
+    padding: '11px 24px', borderRadius: '10px', fontSize: '14px',
     fontWeight: '600', cursor: 'pointer',
   },
-  pagination: {
-    display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '32px',
-  },
+  pagination: { display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '36px' },
   pageBtn: {
-    width: '38px', height: '38px', border: '1.5px solid rgba(13,43,94,0.1)',
-    borderRadius: '10px', background: '#ffffff', color: '#475569',
-    cursor: 'pointer', fontSize: '14px', fontWeight: '600',
-    transition: 'all 0.2s ease',
+    minWidth: '40px', height: '40px', padding: '0 6px', border: '1px solid var(--tz-border)',
+    borderRadius: '10px', background: 'var(--tz-paper)', color: 'var(--tz-text-body)',
+    cursor: 'pointer', fontSize: '14px', fontWeight: '600', transition: 'all 0.2s ease',
   },
   pageBtnActive: {
-    background: '#0D2B5E', color: '#ffffff', borderColor: '#0D2B5E',
+    background: 'var(--tz-ink)', color: '#ffffff', borderColor: 'var(--tz-ink)',
   },
   skeletonCard: {
-    background: '#ffffff', borderRadius: '14px', overflow: 'hidden',
-    border: '1px solid rgba(13,43,94,0.06)',
+    background: 'var(--tz-paper)', borderRadius: '14px', overflow: 'hidden',
+    border: '1px solid var(--tz-border)',
   },
   skeletonImg: {
-    height: '170px', background: 'linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%)',
+    height: '170px', background: 'linear-gradient(90deg, #f2f2ee 25%, #e7e7e1 50%, #f2f2ee 75%)',
     backgroundSize: '200% 100%', animation: 'tz-shimmer 1.5s infinite',
   },
-  skeletonBody: { padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' },
+  skeletonBody: { padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' },
   skeletonLine: {
     height: '10px', borderRadius: '5px',
-    background: 'linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%)',
+    background: 'linear-gradient(90deg, #f2f2ee 25%, #e7e7e1 50%, #f2f2ee 75%)',
     backgroundSize: '200% 100%', animation: 'tz-shimmer 1.5s infinite',
   },
 };
